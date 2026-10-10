@@ -18,7 +18,6 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Icon } from '../../components/ui/Icon';
-import { RestTimerWidget } from '../../components/workout/RestTimerWidget';
 import { useWorkoutStore } from '../../stores/workoutStore';
 
 export default function WorkoutScreen() {
@@ -113,8 +112,6 @@ export default function WorkoutScreen() {
             </Text>
           </View>
 
-          {/* Floating Timer */}
-          <RestTimerWidget />
 
           <ScrollView
             style={styles.scrollView}

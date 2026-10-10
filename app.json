@@ -1,18 +1,20 @@
 {
   "expo": {
-    "name": "Gym-om",
-    "slug": "Gym-om",
+    "name": "Iron Protocol",
+    "slug": "iron-protocol",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "gymom",
-    "userInterfaceStyle": "automatic",
+    "scheme": "ironprotocol",
+    "userInterfaceStyle": "dark",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.omthakur.ironprotocol"
     },
     "android": {
+      "package": "com.omthakur.ironprotocol",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#000000",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -31,7 +33,7 @@
         {
           "image": "./assets/images/splash-icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#000000"
         }
       ]
     ],

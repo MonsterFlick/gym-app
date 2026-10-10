@@ -15,7 +15,6 @@ import { Badge } from '../../components/ui/Badge';
 import { Icon } from '../../components/ui/Icon';
 import { SegmentedControl } from '../../components/ui/SegmentedControl';
 import { useWorkoutStore } from '../../stores/workoutStore';
-import { useHabitStore } from '../../stores/habitStore';
 import { useHydrationStore } from '../../stores/hydrationStore';
 import { useWeighInStore } from '../../stores/weighInStore';
 
@@ -23,7 +22,6 @@ export default function ProgressScreen() {
   const [period, setPeriod] = useState<'weekly' | 'monthly'>('weekly');
 
   const { completedSessions } = useWorkoutStore();
-  const { habits, logs } = useHabitStore();
   const { entries: waterEntries, getTodayTotalMl } = useHydrationStore();
   const { entries: weightEntries } = useWeighInStore();
 
@@ -164,19 +162,24 @@ export default function ProgressScreen() {
             </View>
           </Card>
 
-          {/* Habits Analytics */}
+          {/* Dietary & Hydration Discipline */}
           <Card variant="secondary" style={styles.metricCard}>
             <View style={styles.cardHeaderRow}>
               <View style={styles.titleWithIcon}>
-                <Icon name="Flame" size="sm" color={colors.status.success} weight="fill" />
-                <Text style={[typography.headline, styles.cardTitle]}>Habit Adherence</Text>
+                <Icon name="Flame" size="sm" color={colors.brand.primary} weight="fill" />
+                <Text style={[typography.headline, styles.cardTitle]}>Nutrition Discipline</Text>
               </View>
+              <Badge label="ZERO COMPROMISE" variant="primary" size="sm" />
             </View>
-            <View style={styles.statBoxSingle}>
-              <Text style={[typography.metricMedium, styles.statValue]}>
-                {habits.filter((h) => h.is_active).length}
-              </Text>
-              <Text style={[typography.caption1, styles.statLabel]}>Active Discipline Tracks</Text>
+            <View style={styles.statsGrid}>
+              <View style={styles.statBox}>
+                <Text style={[typography.metricMedium, styles.statValue]}>100%</Text>
+                <Text style={[typography.caption2, styles.statLabel]}>Zero Refined Sugar</Text>
+              </View>
+              <View style={styles.statBox}>
+                <Text style={[typography.metricMedium, styles.statValue]}>Clean</Text>
+                <Text style={[typography.caption2, styles.statLabel]}>No Junk Food</Text>
+              </View>
             </View>
           </Card>
         </ScrollView>

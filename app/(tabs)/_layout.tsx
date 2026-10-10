@@ -53,20 +53,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="habits"
-        options={{
-          title: 'Habits',
-          tabBarIcon: ({ color, focused }) => (
-            <Icon
-              name="CheckCircle"
-              size="sm"
-              color={color}
-              weight={focused ? 'fill' : 'regular'}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="progress"
         options={{
           title: 'Progress',
