@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { colors } from '../../theme/colors';
 import { radii, spacing } from '../../theme/spacing';
-import { NoiseOverlay } from './NoiseBackground';
 
 interface CardProps extends ViewProps {
   children?: React.ReactNode;
@@ -16,7 +15,7 @@ export const Card: React.FC<CardProps> = ({
   style,
   variant = 'primary',
   noPadding = false,
-  withNoise = true,
+  withNoise = false,
   ...props
 }) => {
   const getBackgroundColor = () => {
@@ -44,7 +43,6 @@ export const Card: React.FC<CardProps> = ({
       ]}
       {...props}
     >
-      {withNoise && <NoiseOverlay opacity={0.04} />}
       {children}
     </View>
   );

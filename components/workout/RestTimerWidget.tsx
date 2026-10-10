@@ -6,8 +6,6 @@ import { radii, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { Icon } from '../ui/Icon';
 import { ProgressRing } from '../ui/ProgressRing';
-import { NoiseOverlay } from '../ui/NoiseBackground';
-
 export const RestTimerWidget: React.FC = () => {
   const {
     isActive,
@@ -30,7 +28,6 @@ export const RestTimerWidget: React.FC = () => {
 
   return (
     <View style={styles.floatingCard}>
-      <NoiseOverlay opacity={0.06} />
       <View style={styles.leftCol}>
         <ProgressRing
           progress={progress}
