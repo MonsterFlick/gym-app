@@ -59,11 +59,11 @@ export const TodayAlarmsCard: React.FC = () => {
 
         <View style={styles.alarmItem}>
           <View style={styles.timeBadge}>
-            <Text style={styles.timeText}>10:00</Text>
+            <Text style={styles.timeText}>22:00</Text>
           </View>
           <View style={styles.alarmDetails}>
             <Text style={styles.alarmName}>Vitamin B Complex</Text>
-            <Text style={styles.alarmSub}>Clean fuel only, zero refined sugar</Text>
+            <Text style={styles.alarmSub}>10:00 PM evening dose & zero sugar</Text>
           </View>
         </View>
 

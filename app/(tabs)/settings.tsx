@@ -57,7 +57,7 @@ export default function SettingsScreen() {
       await initializeAllAlarms();
       Alert.alert(
         'Alarms Scheduled',
-        '• 6:30 AM: Wake up & weigh-in\n• 8:00 AM: Creatine (5g)\n• 10:00 AM: Vitamin B Complex\n• Every 30 min: Hydration reminder'
+        '• 6:30 AM: Wake up & weigh-in\n• 8:00 AM: Creatine (5g)\n• 10:00 PM: Vitamin B Complex\n• Every 30 min: Hydration reminder'
       );
     } catch (e: any) {
       Alert.alert('Alarm Error', e.message);
@@ -291,9 +291,9 @@ export default function SettingsScreen() {
                   <Icon name="Pill" size="sm" color="#30D158" weight="fill" />
                 </View>
                 <View style={styles.alarmInfo}>
-                  <Text style={[typography.headline, styles.alarmTitle]}>10:00 AM — Vitamin B</Text>
+                  <Text style={[typography.headline, styles.alarmTitle]}>10:00 PM — Vitamin B</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    Vitamin B complex daily dose
+                    Vitamin B complex evening dose before bed
                   </Text>
                 </View>
               </View>

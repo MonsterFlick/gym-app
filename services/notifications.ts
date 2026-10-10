@@ -154,7 +154,7 @@ export async function scheduleWaterIntervalReminder(intervalMinutes: number = 30
  * Setup all user-requested alarms:
  * - 6:30 AM: Wake up (Weigh-in + No sugar / No junk oath)
  * - 8:00 AM: Creatine (5g dose + discipline reminder)
- * - 10:00 AM: Vitamin B (Daily dose + clean eating reminder)
+ * - 10:00 PM: Vitamin B (Night dose + clean eating reminder)
  * - Every 30 mins: Water reminder + discipline reminder
  */
 export async function initializeAllAlarms(): Promise<void> {
@@ -183,12 +183,12 @@ export async function initializeAllAlarms(): Promise<void> {
     minute: 0,
   });
 
-  // 3. 10:00 AM: Vitamin B alarm
+  // 3. 10:00 PM: Vitamin B alarm (22:00)
   await scheduleDailyAlarm({
     identifier: 'alarm-vitamin-b',
-    title: 'Vitamin B Reminder, Om (10:00 AM)',
-    body: 'Take your Vitamin B complex dose. Keep nutrition 100% clean: No junk, No refined sugar.',
-    hour: 10,
+    title: 'Vitamin B Reminder, Om (10:00 PM)',
+    body: 'Take your Vitamin B complex dose before winding down. Keep nutrition 100% clean: Zero sugar, No junk.',
+    hour: 22,
     minute: 0,
   });
 
@@ -216,7 +216,7 @@ export async function sendTestNotification(): Promise<boolean> {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Alarm System Test',
-        body: 'Active Alarms: 6:30 AM Wake Up | 8:00 AM Creatine (5g) | 10:00 AM Vitamin B | Every 30m Water.',
+        body: 'Active Alarms: 6:30 AM Wake Up | 8:00 AM Creatine (5g) | 10:00 PM Vitamin B | Every 30m Water.',
         sound: true,
       },
       trigger: {

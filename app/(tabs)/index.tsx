@@ -99,7 +99,7 @@ export default function DashboardScreen() {
           {/* 3. Vitals: Hydration & Body Weight 2-Column Grid */}
           <VitalsGrid />
 
-          {/* 4. Daily Scheduled Alarms (6:30, 8:00, 10:00, 30m Water) */}
+          {/* 4. Daily Scheduled Alarms (6:30 AM, 8:00 AM, 10:00 PM, 30m Water) */}
           <TodayAlarmsCard />
         </ScrollView>
       </NoiseBackground>
