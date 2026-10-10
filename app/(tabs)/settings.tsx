@@ -105,7 +105,7 @@ export default function SettingsScreen() {
   const isConnected = isSupabaseConfigured();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView edges={['top']} style={styles.safeArea}>
       <NoiseBackground style={styles.container}>
         <View style={styles.header}>
           <Text style={[typography.caption1, styles.sectionSubtitle]}>PREFERENCES & DATA</Text>

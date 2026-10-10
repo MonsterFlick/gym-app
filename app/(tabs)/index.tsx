@@ -57,7 +57,7 @@ export default function DashboardScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView edges={['top']} style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <NoiseBackground style={styles.noiseContainer}>
         {/* Header */}

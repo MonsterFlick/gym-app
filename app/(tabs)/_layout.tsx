@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
 import { colors } from '../../theme/colors';
 import { Icon } from '../../components/ui/Icon';
 
@@ -15,12 +16,14 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.brand.primary,
         tabBarInactiveTintColor: colors.text.secondary,
         tabBarStyle: {
-          backgroundColor: '#0A0A0C',
-          borderTopColor: colors.border.subtle,
-          borderTopWidth: 1,
-          height: 54 + bottomInset,
+          backgroundColor: '#000000',
+          borderTopColor: 'rgba(255, 255, 255, 0.08)',
+          borderTopWidth: StyleSheet.hairlineWidth,
+          height: 52 + bottomInset,
           paddingBottom: bottomInset,
           paddingTop: 8,
+          elevation: 0,
+          shadowOpacity: 0,
         },
         tabBarLabelStyle: {
           fontSize: 11,

@@ -89,7 +89,7 @@ export default function WorkoutScreen() {
     ).length;
 
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView edges={['top']} style={styles.safeArea}>
         <NoiseBackground style={styles.container}>
           {/* Header */}
           <View style={styles.header}>
@@ -189,7 +189,7 @@ export default function WorkoutScreen() {
     .sort((a, b) => a.sort_order - b.sort_order);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView edges={['top']} style={styles.safeArea}>
       <NoiseBackground style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.programSubtitle}>TRAINING PROGRAM</Text>

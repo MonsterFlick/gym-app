@@ -56,7 +56,7 @@ export default function ProgressScreen() {
       : null;
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView edges={['top']} style={styles.safeArea}>
       <NoiseBackground style={styles.container}>
         <View style={styles.header}>
           <Text style={[typography.caption1, styles.sectionSubtitle]}>ANALYTICS & METRICS</Text>
