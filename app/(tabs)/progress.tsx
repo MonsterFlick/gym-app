@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: spacing.screenPadding,
-    paddingBottom: spacing.massive,
+    paddingBottom: 110,
     gap: spacing.md,
   },
   metricCard: {

@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: spacing.massive,
+    paddingBottom: 110,
     gap: spacing.lg,
   },
   exerciseList: {
