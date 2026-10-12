@@ -13,7 +13,14 @@
     },
     "android": {
       "package": "com.omthakur.ironprotocol",
-      "versionCode": 2,
+      "versionCode": 3,
+      "permissions": [
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.USE_EXACT_ALARM",
+        "android.permission.VIBRATE",
+        "android.permission.WAKE_LOCK",
+        "android.permission.RECEIVE_BOOT_COMPLETED"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#000000",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -35,6 +42,16 @@
           "image": "./assets/images/splash-icon.png",
           "resizeMode": "contain",
           "backgroundColor": "#000000"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#FF3B30",
+          "sounds": [
+            "./assets/sounds/alarm_loud.wav"
+          ]
         }
       ]
     ],

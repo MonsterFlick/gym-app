@@ -143,7 +143,7 @@ export const defaultExercises: Exercise[] = [
     id: 'ex-01',
     name: 'Single-Arm Kneeling Cable Pulldown',
     instructions: 'Drive the elbow toward the hip.',
-    video_url: 'https://youtube.com',
+    video_url: 'https://youtu.be/y1dNSay7Kwk?si=qVZP9Nf51kYERzE6',
     default_rest_seconds: 90,
     is_active: true,
     created_at: new Date().toISOString(),

@@ -24,18 +24,10 @@ import { initializeAllAlarms, sendTestNotification } from '../../services/notifi
 
 export default function SettingsScreen() {
   const {
-    water_target_ml,
     default_rest_seconds,
     weight_increment_kg,
     updateSettings,
   } = useSettingsStore();
-
-  const handleSetWaterTarget = async (ml: number) => {
-    try {
-      Haptics.selectionAsync();
-    } catch {}
-    await updateSettings({ water_target_ml: ml });
-  };
 
   const handleSetRestSeconds = async (sec: number) => {
     try {
@@ -56,8 +48,8 @@ export default function SettingsScreen() {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       await initializeAllAlarms();
       Alert.alert(
-        'Alarms Scheduled',
-        '• 6:30 AM: Wake up & weigh-in\n• 8:00 AM: Creatine (5g)\n• 10:00 PM: Vitamin B Complex\n• Every 30 min: Hydration reminder'
+        'Loud Alarms Scheduled',
+        '• 6:30 AM: Wake up & weigh-in (Loud 10s Alarm)\n• 8:00 AM: Creatine (Loud 10s Alarm)\n• 10:00 PM: Vitamin B Complex (Loud 10s Alarm)\n• Every 30 min: Hydration reminder'
       );
     } catch (e: any) {
       Alert.alert('Alarm Error', e.message);
@@ -153,36 +145,6 @@ export default function SettingsScreen() {
             </Text>
           </Card>
 
-          {/* Daily Water Target Setting */}
-          <Card variant="secondary" style={styles.card}>
-            <View style={styles.titleWithIcon}>
-              <Icon name="Drop" size="sm" color={colors.status.info} weight="fill" />
-              <Text style={[typography.headline, styles.cardTitle]}>Daily Water Target</Text>
-            </View>
-            <View style={styles.pillsRow}>
-              {[2000, 2500, 3000, 3500, 4000].map((amount) => (
-                <TouchableOpacity
-                  key={amount}
-                  activeOpacity={0.7}
-                  onPress={() => handleSetWaterTarget(amount)}
-                  style={[
-                    styles.pill,
-                    water_target_ml === amount && styles.pillActive,
-                  ]}
-                >
-                  <Text
-                    style={[
-                      typography.subhead,
-                      styles.pillText,
-                      water_target_ml === amount && styles.pillTextActive,
-                    ]}
-                  >
-                    {amount} ml
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </Card>
 
           {/* Default Rest Timer Setting */}
           <Card variant="secondary" style={styles.card}>
@@ -267,9 +229,9 @@ export default function SettingsScreen() {
                   <Icon name="Sun" size="sm" color="#FF9500" weight="fill" />
                 </View>
                 <View style={styles.alarmInfo}>
-                  <Text style={[typography.headline, styles.alarmTitle]}>6:30 AM — Wake Up</Text>
+                  <Text style={[typography.headline, styles.alarmTitle]}>6:30 AM — Wake Up (Loud Alarm)</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    Rise & shine, log morning weigh-in & hydration
+                    10s urgent alarm audio & multi-pulse vibration
                   </Text>
                 </View>
               </View>
@@ -279,9 +241,9 @@ export default function SettingsScreen() {
                   <Icon name="Pill" size="sm" color={colors.brand.primary} weight="fill" />
                 </View>
                 <View style={styles.alarmInfo}>
-                  <Text style={[typography.headline, styles.alarmTitle]}>8:00 AM — Creatine</Text>
+                  <Text style={[typography.headline, styles.alarmTitle]}>8:00 AM — Creatine (Loud Alarm)</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    5g Creatine Monohydrate with water
+                    5g Creatine Monohydrate with water (10s urgent alarm)
                   </Text>
                 </View>
               </View>
@@ -291,9 +253,9 @@ export default function SettingsScreen() {
                   <Icon name="Pill" size="sm" color="#30D158" weight="fill" />
                 </View>
                 <View style={styles.alarmInfo}>
-                  <Text style={[typography.headline, styles.alarmTitle]}>10:00 PM — Vitamin B</Text>
+                  <Text style={[typography.headline, styles.alarmTitle]}>10:00 PM — Vitamin B (Loud Alarm)</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    Vitamin B complex evening dose before bed
+                    Vitamin B complex evening dose (10s urgent alarm)
                   </Text>
                 </View>
               </View>
@@ -305,7 +267,7 @@ export default function SettingsScreen() {
                 <View style={styles.alarmInfo}>
                   <Text style={[typography.headline, styles.alarmTitle]}>Every 30 Mins — Water</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    Hydration check to stay on pace for target
+                    Repeating hydration reminder notification
                   </Text>
                 </View>
               </View>
@@ -326,8 +288,8 @@ export default function SettingsScreen() {
                 onPress={handleTestAlarm}
                 style={[styles.alarmActionBtn, styles.alarmTestBtn]}
               >
-                <Icon name="Bell" size="xs" color={colors.text.primary} weight="bold" />
-                <Text style={[typography.caption1, styles.alarmTestBtnText]}>Test Alarm (2s)</Text>
+                <Icon name="Bell" size="xs" color={colors.brand.primary} weight="bold" />
+                <Text style={[typography.caption1, styles.alarmTestBtnText, { color: '#FFFFFF' }]}>Test Loud Alarm (2s)</Text>
               </TouchableOpacity>
             </View>
           </Card>

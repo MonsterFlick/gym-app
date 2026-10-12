@@ -96,7 +96,7 @@ export default function DashboardScreen() {
           {/* 2. Today's Hero Workout Card */}
           <WorkoutSection />
 
-          {/* 3. Vitals: Hydration & Body Weight 2-Column Grid */}
+          {/* 3. Daily Body Weight Tracker (AM Fasting & PM Evening) */}
           <VitalsGrid />
 
           {/* 4. Daily Scheduled Alarms (6:30 AM, 8:00 AM, 10:00 PM, 30m Water) */}

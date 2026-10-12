@@ -41,19 +41,38 @@ export async function requestNotificationPermissions(): Promise<boolean> {
 export async function setupNotificationChannels(): Promise<void> {
   if (Platform.OS === 'android' && Notifications?.setNotificationChannelAsync) {
     try {
-      await Notifications.setNotificationChannelAsync('daily-alarms', {
-        name: 'Daily Alarms & Routine',
+      // Remove deprecated channel if present to clear previous default sounds
+      if (Notifications.deleteNotificationChannelAsync) {
+        try {
+          await Notifications.deleteNotificationChannelAsync('daily-alarms');
+        } catch {}
+      }
+
+      // Loud, long alarm channel with ALARM audio attributes & intense vibration pattern
+      await Notifications.setNotificationChannelAsync('daily-loud-alarms-v2', {
+        name: 'Loud Alarms (Wake-up, Creatine, Vitamin B)',
         importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
+        sound: 'alarm_loud.wav',
+        audioAttributes: {
+          usage: Notifications.AndroidAudioUsage ? Notifications.AndroidAudioUsage.ALARM : 4,
+          contentType: Notifications.AndroidAudioContentType ? Notifications.AndroidAudioContentType.SONIFICATION : 4,
+          flags: {
+            enforceAudibility: true,
+            requestHardwareAudioVideoSynchronization: false,
+          },
+        },
+        // 6+ seconds intense vibration sequence
+        vibrationPattern: [0, 800, 300, 800, 300, 800, 300, 1200, 400, 1200],
         lightColor: '#FF3B30',
-        sound: 'default',
         enableVibrate: true,
+        bypassDnd: true,
         showBadge: true,
         lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
       });
 
+      // Hydration reminder channel (regular notification sound)
       await Notifications.setNotificationChannelAsync('hydration-reminders', {
-        name: 'Hydration Reminders',
+        name: 'Hydration Notifications',
         importance: Notifications.AndroidImportance.HIGH,
         sound: 'default',
         enableVibrate: true,
@@ -92,9 +111,9 @@ export async function scheduleDailyAlarm(params: {
       content: {
         title: params.title,
         body: params.body,
-        sound: true,
-        priority: Notifications.AndroidNotificationPriority.HIGH,
-        channelId: 'daily-alarms',
+        sound: 'alarm_loud.wav',
+        priority: Notifications.AndroidNotificationPriority.MAX,
+        channelId: 'daily-loud-alarms-v2',
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -213,11 +232,15 @@ export async function sendTestNotification(): Promise<boolean> {
     const hasPermission = await requestNotificationPermissions();
     if (!hasPermission) return false;
 
+    await setupNotificationChannels();
+
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Alarm System Test',
-        body: 'Active Alarms: 6:30 AM Wake Up | 8:00 AM Creatine (5g) | 10:00 PM Vitamin B | Every 30m Water.',
-        sound: true,
+        title: '🚨 Loud Alarm Test (Om)',
+        body: 'Loud & long alarm test. Urgent 10s audio + multi-pulse vibration.',
+        sound: 'alarm_loud.wav',
+        channelId: 'daily-loud-alarms-v2',
+        priority: Notifications.AndroidNotificationPriority.MAX,
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,

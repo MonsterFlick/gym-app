@@ -33,7 +33,7 @@ export const TodayAlarmsCard: React.FC = () => {
       </View>
 
       <Text style={styles.subtitle}>
-        Scheduled daily reminders keeping your wake-up, supplements, and water on track.
+        Loud and persistent alarms for wake-up and supplements, plus recurring hydration reminders.
       </Text>
 
       <View style={styles.alarmsList}>
@@ -42,8 +42,8 @@ export const TodayAlarmsCard: React.FC = () => {
             <Text style={styles.timeText}>06:30</Text>
           </View>
           <View style={styles.alarmDetails}>
-            <Text style={styles.alarmName}>Rise & Shine</Text>
-            <Text style={styles.alarmSub}>Morning weigh-in & no sugar oath</Text>
+            <Text style={styles.alarmName}>Rise & Shine (Loud Alarm)</Text>
+            <Text style={styles.alarmSub}>10s urgent audio, intense vibration & oath</Text>
           </View>
         </View>
 
@@ -52,8 +52,8 @@ export const TodayAlarmsCard: React.FC = () => {
             <Text style={styles.timeText}>08:00</Text>
           </View>
           <View style={styles.alarmDetails}>
-            <Text style={styles.alarmName}>Creatine (5g)</Text>
-            <Text style={styles.alarmSub}>Take with water & clean breakfast</Text>
+            <Text style={styles.alarmName}>Creatine 5g (Loud Alarm)</Text>
+            <Text style={styles.alarmSub}>10s urgent audio & water reminder</Text>
           </View>
         </View>
 
@@ -62,8 +62,8 @@ export const TodayAlarmsCard: React.FC = () => {
             <Text style={styles.timeText}>22:00</Text>
           </View>
           <View style={styles.alarmDetails}>
-            <Text style={styles.alarmName}>Vitamin B Complex</Text>
-            <Text style={styles.alarmSub}>10:00 PM evening dose & zero sugar</Text>
+            <Text style={styles.alarmName}>Vitamin B (Loud Alarm)</Text>
+            <Text style={styles.alarmSub}>10:00 PM evening dose & wind-down</Text>
           </View>
         </View>
 
@@ -73,7 +73,7 @@ export const TodayAlarmsCard: React.FC = () => {
           </View>
           <View style={styles.alarmDetails}>
             <Text style={styles.alarmName}>Hydration Check</Text>
-            <Text style={styles.alarmSub}>Recurring water alert & craving check</Text>
+            <Text style={styles.alarmSub}>Repeating 30-min water notification</Text>
           </View>
         </View>
       </View>
@@ -83,8 +83,8 @@ export const TodayAlarmsCard: React.FC = () => {
         onPress={handleTestAlarm}
         style={styles.testButton}
       >
-        <Icon name="Bell" size="xs" color={colors.text.secondary} weight="bold" />
-        <Text style={styles.testBtnText}>Test Alarm Notification (2s)</Text>
+        <Icon name="Bell" size="xs" color={colors.brand.primary} weight="bold" />
+        <Text style={[styles.testBtnText, { color: '#FFFFFF' }]}>Test Loud Alarm & Vibration (2s)</Text>
       </TouchableOpacity>
     </Card>
   );
