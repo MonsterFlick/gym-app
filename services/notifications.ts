@@ -89,11 +89,19 @@ export async function setupNotificationChannels(): Promise<void> {
         lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
       });
 
-      // Hydration reminder channel (regular notification sound)
-      await Notifications.setNotificationChannelAsync('hydration-reminders', {
-        name: 'Hydration Notifications',
+      // Hydration reminder channel with custom short double beep
+      if (Notifications.deleteNotificationChannelAsync) {
+        try {
+          await Notifications.deleteNotificationChannelAsync('hydration-reminders');
+        } catch {}
+      }
+
+      await Notifications.setNotificationChannelAsync('hydration-reminders-v2', {
+        name: 'Hydration Reminders (Double Beep)',
         importance: Notifications.AndroidImportance.HIGH,
-        sound: 'default',
+        sound: 'water_double_beep.wav',
+        vibrationPattern: [0, 150, 100, 150], // Fast double pulse vibration
+        lightColor: '#0A84FF',
         enableVibrate: true,
         showBadge: true,
       });
@@ -150,7 +158,7 @@ export async function scheduleDailyAlarm(params: {
 
 /**
  * Schedule repeating daily water reminders ONLY from 10:00 AM to 10:00 PM (10:00 - 22:00)
- * at 30-minute intervals. Completely silent and inactive at night.
+ * at 30-minute intervals with a short 2-beep sound. Completely silent and inactive at night.
  */
 export async function scheduleWaterIntervalReminder(intervalMinutes: number = 30): Promise<string | null> {
   try {
@@ -193,9 +201,9 @@ export async function scheduleWaterIntervalReminder(intervalMinutes: number = 30
           content: {
             title: `Hydration Check, Om (${timeStr})`,
             body: 'Time to drink water! Keep up your hydration. Remember: Zero Sugar, No Junk Food.',
-            sound: true,
+            sound: 'water_double_beep.wav',
             priority: Notifications.AndroidNotificationPriority.HIGH,
-            channelId: 'hydration-reminders',
+            channelId: 'hydration-reminders-v2',
           },
           trigger: {
             type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -295,6 +303,34 @@ export async function sendTestNotification(): Promise<boolean> {
     return true;
   } catch (error) {
     console.warn('Error sending test notification:', error);
+    return false;
+  }
+}
+
+export async function sendTestWaterNotification(): Promise<boolean> {
+  try {
+    const hasPermission = await requestNotificationPermissions();
+    if (!hasPermission) return false;
+
+    await setupNotificationChannels();
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: '💧 Hydration Check (2-Beep Test)',
+        body: 'Short double-beep water reminder test prompt.',
+        sound: 'water_double_beep.wav',
+        channelId: 'hydration-reminders-v2',
+        priority: Notifications.AndroidNotificationPriority.HIGH,
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        seconds: 2,
+        repeats: false,
+      } as any,
+    });
+    return true;
+  } catch (error) {
+    console.warn('Error sending test water notification:', error);
     return false;
   }
 }

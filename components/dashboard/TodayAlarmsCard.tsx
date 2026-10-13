@@ -7,7 +7,7 @@ import { typography } from '../../theme/typography';
 import { Card } from '../ui/Card';
 import { Icon } from '../ui/Icon';
 import { Badge } from '../ui/Badge';
-import { sendTestNotification } from '../../services/notifications';
+import { sendTestNotification, sendTestWaterNotification } from '../../services/notifications';
 
 export const TodayAlarmsCard: React.FC = () => {
   const handleTestAlarm = async () => {
@@ -16,6 +16,18 @@ export const TodayAlarmsCard: React.FC = () => {
       const sent = await sendTestNotification();
       if (sent) {
         Alert.alert('Test Alarm Sent', 'Check your device notification banner in 2 seconds.');
+      } else {
+        Alert.alert('Notification Notice', 'Please ensure notification permissions are enabled in system settings.');
+      }
+    } catch {}
+  };
+
+  const handleTestWater = async () => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      const sent = await sendTestWaterNotification();
+      if (sent) {
+        Alert.alert('Water 2-Beep Sent', 'Listen for the 2-beep sound in 2 seconds.');
       } else {
         Alert.alert('Notification Notice', 'Please ensure notification permissions are enabled in system settings.');
       }
@@ -78,14 +90,25 @@ export const TodayAlarmsCard: React.FC = () => {
         </View>
       </View>
 
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={handleTestAlarm}
-        style={styles.testButton}
-      >
-        <Icon name="Bell" size="xs" color={colors.brand.primary} weight="bold" />
-        <Text style={[styles.testBtnText, { color: '#FFFFFF' }]}>Test Loud Alarm & Vibration (2s)</Text>
-      </TouchableOpacity>
+      <View style={styles.testButtonsRow}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={handleTestAlarm}
+          style={[styles.testButton, styles.testAlarmBtn]}
+        >
+          <Icon name="Bell" size="xs" color={colors.brand.primary} weight="bold" />
+          <Text style={[styles.testBtnText, { color: '#FFFFFF' }]}>Test Loud Alarm</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={handleTestWater}
+          style={[styles.testButton, styles.testWaterBtn]}
+        >
+          <Icon name="Drop" size="xs" color={colors.status.info} weight="bold" />
+          <Text style={[styles.testBtnText, { color: colors.status.info }]}>Test 2-Beep</Text>
+        </TouchableOpacity>
+      </View>
     </Card>
   );
 };
@@ -158,8 +181,13 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginTop: 1,
   },
-  testButton: {
+  testButtonsRow: {
+    flexDirection: 'row',
+    gap: 10,
     marginTop: spacing.md,
+  },
+  testButton: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -170,9 +198,15 @@ const styles = StyleSheet.create({
     borderColor: colors.border.subtle,
     gap: 6,
   },
+  testAlarmBtn: {
+    borderColor: 'rgba(255, 59, 48, 0.25)',
+  },
+  testWaterBtn: {
+    borderColor: 'rgba(10, 132, 255, 0.25)',
+  },
   testBtnText: {
     color: colors.text.secondary,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

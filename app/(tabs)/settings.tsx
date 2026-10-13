@@ -267,7 +267,7 @@ export default function SettingsScreen() {
                 <View style={styles.alarmInfo}>
                   <Text style={[typography.headline, styles.alarmTitle]}>Every 30 Mins (10 AM – 10 PM) — Water</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    Active during daytime only, silent at night
+                    Short 2-beep prompt, daytime only (10 AM - 10 PM)
                   </Text>
                 </View>
               </View>

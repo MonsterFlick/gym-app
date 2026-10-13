@@ -50,7 +50,8 @@
           "icon": "./assets/images/icon.png",
           "color": "#FF3B30",
           "sounds": [
-            "./assets/sounds/alarm_loud.wav"
+            "./assets/sounds/alarm_loud.wav",
+            "./assets/sounds/water_double_beep.wav"
           ]
         }
       ]
