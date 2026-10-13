@@ -49,7 +49,7 @@ export default function SettingsScreen() {
       await initializeAllAlarms();
       Alert.alert(
         'Loud Alarms Scheduled',
-        '• 6:30 AM: Wake up & weigh-in (Loud 10s Alarm)\n• 8:00 AM: Creatine (Loud 10s Alarm)\n• 10:00 PM: Vitamin B Complex (Loud 10s Alarm)\n• Every 30 min: Hydration reminder'
+        '• 6:30 AM: Wake up & weigh-in (Loud 10s Alarm)\n• 8:00 AM: Creatine (Loud 10s Alarm)\n• 10:00 PM: Vitamin B Complex (Loud 10s Alarm)\n• 10 AM – 10 PM (Every 30m): Hydration reminder'
       );
     } catch (e: any) {
       Alert.alert('Alarm Error', e.message);
@@ -265,9 +265,9 @@ export default function SettingsScreen() {
                   <Icon name="Drop" size="sm" color={colors.status.info} weight="fill" />
                 </View>
                 <View style={styles.alarmInfo}>
-                  <Text style={[typography.headline, styles.alarmTitle]}>Every 30 Mins — Water</Text>
+                  <Text style={[typography.headline, styles.alarmTitle]}>Every 30 Mins (10 AM – 10 PM) — Water</Text>
                   <Text style={[typography.caption1, styles.alarmSubtitle]}>
-                    Repeating hydration reminder notification
+                    Active during daytime only, silent at night
                   </Text>
                 </View>
               </View>

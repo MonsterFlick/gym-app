@@ -99,7 +99,7 @@ export default function DashboardScreen() {
           {/* 3. Daily Body Weight Tracker (AM Fasting & PM Evening) */}
           <VitalsGrid />
 
-          {/* 4. Daily Scheduled Alarms (6:30 AM, 8:00 AM, 10:00 PM, 30m Water) */}
+          {/* 4. Daily Scheduled Alarms (6:30 AM, 8:00 AM, 10:00 PM, 10 AM-10 PM Water) */}
           <TodayAlarmsCard />
         </ScrollView>
       </NoiseBackground>

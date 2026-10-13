@@ -72,8 +72,8 @@ export const TodayAlarmsCard: React.FC = () => {
             <Text style={styles.timeText}>30m</Text>
           </View>
           <View style={styles.alarmDetails}>
-            <Text style={styles.alarmName}>Hydration Check</Text>
-            <Text style={styles.alarmSub}>Repeating 30-min water notification</Text>
+            <Text style={styles.alarmName}>Hydration Check (10 AM – 10 PM)</Text>
+            <Text style={styles.alarmSub}>Every 30 mins during daytime only</Text>
           </View>
         </View>
       </View>

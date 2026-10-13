@@ -7,14 +7,33 @@ try {
   Notifications = require('expo-notifications');
   if (Notifications?.setNotificationHandler) {
     Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-        shouldShowBanner: true,
-        shouldPresentAlert: true,
-        shouldShowList: true,
-      }),
+      handleNotification: async (notification: any) => {
+        // Enforce 10:00 AM to 10:00 PM window for water reminders
+        const channelId = notification?.request?.content?.channelId;
+        const identifier = notification?.request?.identifier;
+        if (channelId === 'hydration-reminders' || identifier?.startsWith('water-')) {
+          const currentHour = new Date().getHours();
+          if (currentHour < 10 || currentHour > 22) {
+            return {
+              shouldShowAlert: false,
+              shouldPlaySound: false,
+              shouldSetBadge: false,
+              shouldShowBanner: false,
+              shouldPresentAlert: false,
+              shouldShowList: false,
+            };
+          }
+        }
+
+        return {
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: false,
+          shouldShowBanner: true,
+          shouldPresentAlert: true,
+          shouldShowList: true,
+        };
+      },
     });
   }
 } catch (error) {
@@ -130,7 +149,8 @@ export async function scheduleDailyAlarm(params: {
 }
 
 /**
- * Schedule repeating water reminder every interval minutes (e.g. 30 mins)
+ * Schedule repeating daily water reminders ONLY from 10:00 AM to 10:00 PM (10:00 - 22:00)
+ * at 30-minute intervals. Completely silent and inactive at night.
  */
 export async function scheduleWaterIntervalReminder(intervalMinutes: number = 30): Promise<string | null> {
   try {
@@ -139,32 +159,56 @@ export async function scheduleWaterIntervalReminder(intervalMinutes: number = 30
 
     await setupNotificationChannels();
 
-    const identifier = 'water-interval-reminder';
+    // 1. Cancel legacy continuous interval notification
     try {
-      await Notifications.cancelScheduledNotificationAsync(identifier);
+      await Notifications.cancelScheduledNotificationAsync('water-interval-reminder');
     } catch {}
 
-    const seconds = Math.max(60, intervalMinutes * 60);
+    // 2. Cancel previous water slots to avoid duplicate schedules
+    try {
+      if (Notifications.getAllScheduledNotificationsAsync) {
+        const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+        for (const item of scheduled) {
+          if (item.identifier?.startsWith('water-slot-')) {
+            await Notifications.cancelScheduledNotificationAsync(item.identifier);
+          }
+        }
+      }
+    } catch {}
 
-    const id = await Notifications.scheduleNotificationAsync({
-      identifier,
-      content: {
-        title: 'Hydration Check, Om',
-        body: 'Time to drink water! Keep up your hydration. Remember: Zero Sugar, No Junk Food.',
-        sound: true,
-        priority: Notifications.AndroidNotificationPriority.HIGH,
-        channelId: 'hydration-reminders',
-      },
-      trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-        seconds,
-        repeats: true,
-      } as any,
-    });
+    // 3. Schedule daily slots strictly between 10:00 AM and 10:00 PM
+    const startHour = 10;
+    const endHour = 22;
 
-    return id;
+    for (let h = startHour; h <= endHour; h++) {
+      for (let m = 0; m < 60; m += intervalMinutes) {
+        // At 22:00 (10:00 PM), schedule only 22:00, stop before 22:30
+        if (h === endHour && m > 0) break;
+
+        const timeStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        const identifier = `water-slot-${h}-${m}`;
+
+        await Notifications.scheduleNotificationAsync({
+          identifier,
+          content: {
+            title: `Hydration Check, Om (${timeStr})`,
+            body: 'Time to drink water! Keep up your hydration. Remember: Zero Sugar, No Junk Food.',
+            sound: true,
+            priority: Notifications.AndroidNotificationPriority.HIGH,
+            channelId: 'hydration-reminders',
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DAILY,
+            hour: h,
+            minute: m,
+          } as any,
+        });
+      }
+    }
+
+    return 'water-slots-10am-10pm-scheduled';
   } catch (error) {
-    console.warn('Error scheduling water reminder:', error);
+    console.warn('Error scheduling water reminders (10 AM to 10 PM):', error);
     return null;
   }
 }
