@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import * as Linking from 'expo-linking';
 import * as Haptics from 'expo-haptics';
 import { colors } from '../../theme/colors';
 import { spacing, radii } from '../../theme/spacing';
@@ -31,6 +32,13 @@ export const TodayAlarmsCard: React.FC = () => {
       } else {
         Alert.alert('Notification Notice', 'Please ensure notification permissions are enabled in system settings.');
       }
+    } catch {}
+  };
+
+  const handleOpenSettings = async () => {
+    try {
+      Haptics.selectionAsync();
+      await Linking.openSettings();
     } catch {}
   };
 
@@ -109,6 +117,15 @@ export const TodayAlarmsCard: React.FC = () => {
           <Text style={[styles.testBtnText, { color: colors.status.info }]}>Test 2-Beep</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={handleOpenSettings}
+        style={styles.settingsLinkBtn}
+      >
+        <Icon name="GearSix" size="xs" color={colors.text.tertiary} weight="bold" />
+        <Text style={styles.settingsLinkText}>Customize Sounds in Phone Settings</Text>
+      </TouchableOpacity>
     </Card>
   );
 };
@@ -208,5 +225,18 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     fontSize: 12,
     fontWeight: '700',
+  },
+  settingsLinkBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8,
+    paddingVertical: 6,
+    gap: 6,
+  },
+  settingsLinkText: {
+    color: colors.text.tertiary,
+    fontSize: 11,
+    fontWeight: '500',
   },
 });

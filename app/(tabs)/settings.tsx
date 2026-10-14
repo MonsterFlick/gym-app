@@ -20,7 +20,8 @@ import { Badge } from '../../components/ui/Badge';
 import { Icon } from '../../components/ui/Icon';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { isSupabaseConfigured } from '../../lib/supabase';
-import { initializeAllAlarms, sendTestNotification } from '../../services/notifications';
+import * as Linking from 'expo-linking';
+import { initializeAllAlarms, sendTestNotification, sendTestWaterNotification } from '../../services/notifications';
 
 export default function SettingsScreen() {
   const {
@@ -61,12 +62,35 @@ export default function SettingsScreen() {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       const sent = await sendTestNotification();
       if (sent) {
-        Alert.alert('Test Scheduled', 'You will receive a notification in 2 seconds.');
+        Alert.alert('Test Scheduled', 'You will receive a loud alarm notification in 2 seconds.');
       } else {
         Alert.alert('Notification Notice', 'Please ensure notification permissions are granted.');
       }
     } catch (e: any) {
       Alert.alert('Notification Error', e.message);
+    }
+  };
+
+  const handleTestWater = async () => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      const sent = await sendTestWaterNotification();
+      if (sent) {
+        Alert.alert('Water 2-Beep Scheduled', 'You will receive the 2-beep water alert in 2 seconds.');
+      } else {
+        Alert.alert('Notification Notice', 'Please ensure notification permissions are granted.');
+      }
+    } catch (e: any) {
+      Alert.alert('Notification Error', e.message);
+    }
+  };
+
+  const handleOpenPhoneNotificationSettings = async () => {
+    try {
+      Haptics.selectionAsync();
+      await Linking.openSettings();
+    } catch (e: any) {
+      Alert.alert('Settings Error', e.message);
     }
   };
 
@@ -273,24 +297,46 @@ export default function SettingsScreen() {
               </View>
             </View>
 
-            <View style={styles.alarmButtonsRow}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={handleSyncAlarms}
-                style={[styles.alarmActionBtn, styles.alarmSyncBtn]}
-              >
-                <Icon name="ArrowClockwise" size="xs" color="#FFFFFF" weight="bold" />
-                <Text style={[typography.caption1, styles.alarmSyncBtnText]}>Re-sync Alarms</Text>
-              </TouchableOpacity>
+            <View style={styles.alarmButtonsColumn}>
+              <View style={styles.alarmButtonsRow}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleTestAlarm}
+                  style={[styles.alarmActionBtn, styles.alarmTestBtn]}
+                >
+                  <Icon name="Bell" size="xs" color={colors.brand.primary} weight="bold" />
+                  <Text style={[typography.caption1, styles.alarmTestBtnText, { color: '#FFFFFF' }]}>Test Loud Alarm</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={handleTestAlarm}
-                style={[styles.alarmActionBtn, styles.alarmTestBtn]}
-              >
-                <Icon name="Bell" size="xs" color={colors.brand.primary} weight="bold" />
-                <Text style={[typography.caption1, styles.alarmTestBtnText, { color: '#FFFFFF' }]}>Test Loud Alarm (2s)</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleTestWater}
+                  style={[styles.alarmActionBtn, styles.alarmTestBtn]}
+                >
+                  <Icon name="Drop" size="xs" color={colors.status.info} weight="bold" />
+                  <Text style={[typography.caption1, styles.alarmTestBtnText, { color: colors.status.info }]}>Test 2-Beep</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.alarmButtonsRow}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleSyncAlarms}
+                  style={[styles.alarmActionBtn, styles.alarmSyncBtn]}
+                >
+                  <Icon name="ArrowClockwise" size="xs" color="#FFFFFF" weight="bold" />
+                  <Text style={[typography.caption1, styles.alarmSyncBtnText]}>Re-sync Alarms</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleOpenPhoneNotificationSettings}
+                  style={[styles.alarmActionBtn, styles.alarmSettingsBtn]}
+                >
+                  <Icon name="GearSix" size="xs" color={colors.text.secondary} weight="bold" />
+                  <Text style={[typography.caption1, styles.alarmSettingsBtnText]}>Phone Settings</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </Card>
 
@@ -448,10 +494,13 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     marginTop: 2,
   },
+  alarmButtonsColumn: {
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
   alarmButtonsRow: {
     flexDirection: 'row',
     gap: spacing.sm,
-    marginTop: spacing.md,
   },
   alarmActionBtn: {
     flex: 1,
@@ -476,6 +525,15 @@ const styles = StyleSheet.create({
   },
   alarmTestBtnText: {
     color: colors.text.primary,
+    fontWeight: '600',
+  },
+  alarmSettingsBtn: {
+    backgroundColor: colors.background.tertiary,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
+  },
+  alarmSettingsBtnText: {
+    color: colors.text.secondary,
     fontWeight: '600',
   },
   profileCard: {
