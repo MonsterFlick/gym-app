@@ -11,7 +11,7 @@ try {
         // Enforce 10:00 AM to 10:00 PM window for water reminders
         const channelId = notification?.request?.content?.channelId;
         const identifier = notification?.request?.identifier;
-        if (channelId === 'hydration-reminders' || identifier?.startsWith('water-')) {
+        if (channelId?.startsWith('hydration-reminders') || identifier?.startsWith('water-')) {
           const currentHour = new Date().getHours();
           if (currentHour < 10 || currentHour > 22) {
             return {
@@ -60,15 +60,16 @@ export async function requestNotificationPermissions(): Promise<boolean> {
 export async function setupNotificationChannels(): Promise<void> {
   if (Platform.OS === 'android' && Notifications?.setNotificationChannelAsync) {
     try {
-      // Remove deprecated channel if present to clear previous default sounds
+      // Remove deprecated channels if present to clear previous default sounds
       if (Notifications.deleteNotificationChannelAsync) {
         try {
           await Notifications.deleteNotificationChannelAsync('daily-alarms');
+          await Notifications.deleteNotificationChannelAsync('daily-loud-alarms-v2');
         } catch {}
       }
 
       // Loud, long alarm channel with ALARM audio attributes & intense vibration pattern
-      await Notifications.setNotificationChannelAsync('daily-loud-alarms-v2', {
+      await Notifications.setNotificationChannelAsync('daily-loud-alarms-v3', {
         name: 'Loud Alarms (Wake-up, Creatine, Vitamin B)',
         importance: Notifications.AndroidImportance.MAX,
         sound: 'alarm_loud.wav',
@@ -93,10 +94,11 @@ export async function setupNotificationChannels(): Promise<void> {
       if (Notifications.deleteNotificationChannelAsync) {
         try {
           await Notifications.deleteNotificationChannelAsync('hydration-reminders');
+          await Notifications.deleteNotificationChannelAsync('hydration-reminders-v2');
         } catch {}
       }
 
-      await Notifications.setNotificationChannelAsync('hydration-reminders-v2', {
+      await Notifications.setNotificationChannelAsync('hydration-reminders-v3', {
         name: 'Hydration Reminders (Double Beep)',
         importance: Notifications.AndroidImportance.HIGH,
         sound: 'water_double_beep.wav',
@@ -140,7 +142,7 @@ export async function scheduleDailyAlarm(params: {
         body: params.body,
         sound: 'alarm_loud.wav',
         priority: Notifications.AndroidNotificationPriority.MAX,
-        channelId: 'daily-loud-alarms-v2',
+        channelId: 'daily-loud-alarms-v3',
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -203,7 +205,7 @@ export async function scheduleWaterIntervalReminder(intervalMinutes: number = 30
             body: 'Time to drink water! Keep up your hydration. Remember: Zero Sugar, No Junk Food.',
             sound: 'water_double_beep.wav',
             priority: Notifications.AndroidNotificationPriority.HIGH,
-            channelId: 'hydration-reminders-v2',
+            channelId: 'hydration-reminders-v3',
           },
           trigger: {
             type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -291,7 +293,7 @@ export async function sendTestNotification(): Promise<boolean> {
         title: '🚨 Loud Alarm Test (Om)',
         body: 'Loud & long alarm test. Urgent 10s audio + multi-pulse vibration.',
         sound: 'alarm_loud.wav',
-        channelId: 'daily-loud-alarms-v2',
+        channelId: 'daily-loud-alarms-v3',
         priority: Notifications.AndroidNotificationPriority.MAX,
       },
       trigger: {
@@ -319,7 +321,7 @@ export async function sendTestWaterNotification(): Promise<boolean> {
         title: '💧 Hydration Check (2-Beep Test)',
         body: 'Short double-beep water reminder test prompt.',
         sound: 'water_double_beep.wav',
-        channelId: 'hydration-reminders-v2',
+        channelId: 'hydration-reminders-v3',
         priority: Notifications.AndroidNotificationPriority.HIGH,
       },
       trigger: {
